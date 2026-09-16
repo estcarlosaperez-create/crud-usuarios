@@ -1,0 +1,105 @@
+<div class="page">
+  <header class="page__header">
+    <span class="page__tag">Servicios REST · Angular</span>
+    <h1>Gestión de usuarios</h1>
+    <p class="page__subtitle">
+      Consumo del endpoint <code>{{ '{' }} GET / POST {{ '}' }} http://localhost:1337/usuarios</code>
+    </p>
+  </header>
+
+  @if (error()) {
+    <div class="banner banner--error">{{ error() }}</div>
+  }
+
+  <div class="layout">
+    <section class="card card--form">
+      <h2>{{ editando ? 'Editar usuario' : 'Nuevo usuario' }}</h2>
+
+      <form (ngSubmit)="guardar()" #f="ngForm">
+        <label class="field">
+          <span>Nombre</span>
+          <input
+            type="text"
+            name="nombre"
+            [(ngModel)]="usuarioActual.nombre"
+            required
+            maxlength="30"
+            placeholder="Ej: Ana Martínez"
+          />
+        </label>
+
+        <label class="field">
+          <span>Edad</span>
+          <input
+            type="text"
+            name="edad"
+            [(ngModel)]="usuarioActual.edad"
+            maxlength="6"
+            placeholder="Ej: 28"
+          />
+        </label>
+
+        <label class="field">
+          <span>Tipo</span>
+          <input
+            type="text"
+            name="tipo"
+            [(ngModel)]="usuarioActual.tipo"
+            maxlength="30"
+            placeholder="Ej: Administrador"
+          />
+        </label>
+
+        <div class="form__actions">
+          <button type="submit" class="btn btn--primary" [disabled]="!f.form.valid">
+            {{ editando ? 'Guardar cambios' : 'Crear usuario' }}
+          </button>
+          @if (editando) {
+            <button type="button" class="btn btn--ghost" (click)="cancelarEdicion()">
+              Cancelar
+            </button>
+          }
+        </div>
+      </form>
+    </section>
+
+    <section class="card card--table">
+      <div class="card__head">
+        <h2>Usuarios registrados</h2>
+        <button class="btn btn--ghost btn--small" (click)="cargarUsuarios()">Recargar</button>
+      </div>
+
+      @if (cargando()) {
+        <p class="state">Cargando…</p>
+      } @else if (usuarios().length === 0) {
+        <p class="state">Todavía no hay usuarios. Crea el primero desde el formulario.</p>
+      } @else {
+        <table>
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>Nombre</th>
+              <th>Edad</th>
+              <th>Tipo</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (u of usuarios(); track u.id) {
+              <tr>
+                <td>{{ u.id }}</td>
+                <td>{{ u.nombre }}</td>
+                <td>{{ u.edad }}</td>
+                <td>{{ u.tipo }}</td>
+                <td class="td__actions">
+                  <button class="btn btn--small" (click)="editar(u)">Editar</button>
+                  <button class="btn btn--small btn--danger" (click)="eliminar(u)">Eliminar</button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </section>
+  </div>
+</div>
