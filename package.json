@@ -2,10 +2,10 @@
   "name": "crud-usuarios",
   "version": "1.0.0",
   "scripts": {
-  "ng": "ng",
-  "start": "ng serve",
-  "build": "ng build",
-  "start:prod": "serve -s dist/crud-usuarios -l 3000"
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "start:prod": "serve -s dist/crud-usuarios/browser"
   },
   "private": true,
   "dependencies": {
