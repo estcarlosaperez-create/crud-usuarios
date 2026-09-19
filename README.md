@@ -67,5 +67,8 @@ src/
 Si tu API corre en otro puerto o ruta, edita esta línea en `src/app/services/usuario.service.ts`:
 
 ```ts
-private readonly apiUrl = 'http://localhost:1337/usuarios';
+```typescript
+private readonly apiUrl =
+  'https://crud-usuarios-production-5e28.up.railway.app/usuarios';
 ```
+

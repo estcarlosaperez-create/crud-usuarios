@@ -16,7 +16,6 @@ export class AppComponent implements OnInit {
   cargando = signal<boolean>(false);
   error = signal<string | null>(null);
 
-  // Usuario en edición (null = modo "crear nuevo")
   usuarioActual: Usuario = this.usuarioVacio();
   editando = false;
 
@@ -27,12 +26,17 @@ export class AppComponent implements OnInit {
   }
 
   usuarioVacio(): Usuario {
-    return { nombre: '', edad: '', tipo: '' };
+    return {
+      nombre: '',
+      edad: '',
+      tipo: ''
+    };
   }
 
   cargarUsuarios(): void {
     this.cargando.set(true);
     this.error.set(null);
+
     this.usuarioService.obtenerUsuarios().subscribe({
       next: (data) => {
         this.usuarios.set(data);
@@ -40,9 +44,11 @@ export class AppComponent implements OnInit {
       },
       error: (err) => {
         console.error(err);
+
         this.error.set(
-          'No se pudo conectar con el endpoint. Verifica que esté corriendo en http://localhost:1337',
+          'No se pudo conectar con el endpoint de Railway. Verifica que el servicio REST esté disponible.'
         );
+
         this.cargando.set(false);
       },
     });
@@ -54,14 +60,21 @@ export class AppComponent implements OnInit {
     }
 
     if (this.editando && this.usuarioActual.id) {
-      this.usuarioService.actualizarUsuario(this.usuarioActual).subscribe({
+
+      // CORREGIDO: se envían ID y usuario
+      this.usuarioService.actualizarUsuario(
+        this.usuarioActual.id,
+        this.usuarioActual
+      ).subscribe({
         next: () => {
           this.cargarUsuarios();
           this.cancelarEdicion();
         },
         error: (err) => this.manejarErrorEscritura(err),
       });
+
     } else {
+
       this.usuarioService.crearUsuario(this.usuarioActual).subscribe({
         next: () => {
           this.cargarUsuarios();
@@ -78,9 +91,17 @@ export class AppComponent implements OnInit {
   }
 
   eliminar(usuario: Usuario): void {
-    if (!usuario.id) return;
-    const confirmado = confirm(`¿Eliminar a "${usuario.nombre}"?`);
-    if (!confirmado) return;
+    if (!usuario.id) {
+      return;
+    }
+
+    const confirmado = confirm(
+      `¿Eliminar a "${usuario.nombre}"?`
+    );
+
+    if (!confirmado) {
+      return;
+    }
 
     this.usuarioService.eliminarUsuario(usuario.id).subscribe({
       next: () => this.cargarUsuarios(),
@@ -95,8 +116,9 @@ export class AppComponent implements OnInit {
 
   private manejarErrorEscritura(err: unknown): void {
     console.error(err);
+
     this.error.set(
-      'La operación falló. Si estás creando/editando, revisa que el endpoint soporte esa ruta.',
+      'La operación falló. Verifica que el servicio REST de Railway esté disponible.'
     );
   }
 }

@@ -34806,7 +34806,7 @@ var ReactiveFormsModule = class _ReactiveFormsModule {
 // src/app/services/usuario.service.ts
 var UsuarioService = class _UsuarioService {
   http;
-  apiUrl = "http://localhost:1337/usuarios";
+  apiUrl = "https://crud-usuarios-production-5e28.up.railway.app/usuarios";
   constructor(http) {
     this.http = http;
   }
@@ -34816,11 +34816,14 @@ var UsuarioService = class _UsuarioService {
   crearUsuario(usuario) {
     return this.http.post(this.apiUrl, usuario);
   }
-  actualizarUsuario(usuario) {
-    return this.http.put(`${this.apiUrl}/${usuario.id}`, usuario);
-  }
   eliminarUsuario(id) {
     return this.http.delete(`${this.apiUrl}/${id}`);
+  }
+  actualizarUsuario(id, usuario) {
+    return this.http.put(`${this.apiUrl}/${id}`, usuario);
+  }
+  obtenerUsuario(id) {
+    return this.http.get(`${this.apiUrl}/${id}`);
   }
   static \u0275fac = function UsuarioService_Factory(t) {
     return new (t || _UsuarioService)(\u0275\u0275inject(HttpClient));
@@ -34944,7 +34947,6 @@ var AppComponent = class _AppComponent {
   usuarios = signal([]);
   cargando = signal(false);
   error = signal(null);
-  // Usuario en edición (null = modo "crear nuevo")
   usuarioActual = this.usuarioVacio();
   editando = false;
   constructor(usuarioService) {
@@ -34954,7 +34956,11 @@ var AppComponent = class _AppComponent {
     this.cargarUsuarios();
   }
   usuarioVacio() {
-    return { nombre: "", edad: "", tipo: "" };
+    return {
+      nombre: "",
+      edad: "",
+      tipo: ""
+    };
   }
   cargarUsuarios() {
     this.cargando.set(true);
@@ -34966,7 +34972,7 @@ var AppComponent = class _AppComponent {
       },
       error: (err) => {
         console.error(err);
-        this.error.set("No se pudo conectar con el endpoint. Verifica que est\xE9 corriendo en http://localhost:1337");
+        this.error.set("No se pudo conectar con el endpoint de Railway. Verifica que el servicio REST est\xE9 disponible.");
         this.cargando.set(false);
       }
     });
@@ -34976,7 +34982,7 @@ var AppComponent = class _AppComponent {
       return;
     }
     if (this.editando && this.usuarioActual.id) {
-      this.usuarioService.actualizarUsuario(this.usuarioActual).subscribe({
+      this.usuarioService.actualizarUsuario(this.usuarioActual.id, this.usuarioActual).subscribe({
         next: () => {
           this.cargarUsuarios();
           this.cancelarEdicion();
@@ -34998,11 +35004,13 @@ var AppComponent = class _AppComponent {
     this.editando = true;
   }
   eliminar(usuario) {
-    if (!usuario.id)
+    if (!usuario.id) {
       return;
+    }
     const confirmado = confirm(`\xBFEliminar a "${usuario.nombre}"?`);
-    if (!confirmado)
+    if (!confirmado) {
       return;
+    }
     this.usuarioService.eliminarUsuario(usuario.id).subscribe({
       next: () => this.cargarUsuarios(),
       error: (err) => this.manejarErrorEscritura(err)
@@ -35014,7 +35022,7 @@ var AppComponent = class _AppComponent {
   }
   manejarErrorEscritura(err) {
     console.error(err);
-    this.error.set("La operaci\xF3n fall\xF3. Si est\xE1s creando/editando, revisa que el endpoint soporte esa ruta.");
+    this.error.set("La operaci\xF3n fall\xF3. Verifica que el servicio REST de Railway est\xE9 disponible.");
   }
   static \u0275fac = function AppComponent_Factory(t) {
     return new (t || _AppComponent)(\u0275\u0275directiveInject(UsuarioService));
@@ -35093,7 +35101,7 @@ var AppComponent = class _AppComponent {
     if (rf & 2) {
       const f_r6 = \u0275\u0275reference(16);
       \u0275\u0275advance(9);
-      \u0275\u0275textInterpolate2("", "{", " GET / POST ", "}", " http://localhost:1337/usuarios");
+      \u0275\u0275textInterpolate2("", "{", " GET / POST ", "}", " https://crud-usuarios-production-5e28.up.railway.app/usuarios");
       \u0275\u0275advance();
       \u0275\u0275conditional(10, ctx.error() ? 10 : -1);
       \u0275\u0275advance(4);
