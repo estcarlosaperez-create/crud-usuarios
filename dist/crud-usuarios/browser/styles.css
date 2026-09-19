@@ -1,0 +1,27 @@
+/* src/styles.css */
+:root {
+  --ink: #1f2a37;
+  --ink-soft: #64748b;
+  --surface: #ffffff;
+  --surface-alt: #f4f6f8;
+  --border: #e2e6eb;
+  --teal: #0d9488;
+  --bg: #eef1f4;
+}
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  font-family:
+    "Inter",
+    -apple-system,
+    sans-serif;
+  color: var(--ink);
+}
+
+/* angular:styles/global:styles */
+/*# sourceMappingURL=styles.css.map */

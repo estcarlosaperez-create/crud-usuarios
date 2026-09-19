@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/styles.css"],
+  "sourcesContent": [":root {\n  --ink: #1f2a37;\n  --ink-soft: #64748b;\n  --surface: #ffffff;\n  --surface-alt: #f4f6f8;\n  --border: #e2e6eb;\n  --teal: #0d9488;\n  --bg: #eef1f4;\n}\n\n* {\n  box-sizing: border-box;\n}\n\nhtml,\nbody {\n  margin: 0;\n  padding: 0;\n  background: var(--bg);\n  font-family: 'Inter', -apple-system, sans-serif;\n  color: var(--ink);\n}\n"],
+  "mappings": ";AAAA;AACE,SAAO;AACP,cAAY;AACZ,aAAW;AACX,iBAAe;AACf,YAAU;AACV,UAAQ;AACR,QAAM;AACR;AAEA;AACE,cAAY;AACd;AAEA;AACA;AACE,UAAQ;AACR,WAAS;AACT,cAAY,IAAI;AAChB;AAAA,IAAa,OAAO;AAAA,IAAE,aAAa;AAAA,IAAE;AACrC,SAAO,IAAI;AACb;",
+  "names": []
+}
