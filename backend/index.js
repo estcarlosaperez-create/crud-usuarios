@@ -169,14 +169,13 @@ app.put("/usuarios/:id", actualizarUsuario);
 app.delete("/usuarios/:id", eliminarUsuario);
 
 // ======================================================
+// ======================================================
 // Iniciar servidor
 // ======================================================
 
 const port = process.env.PORT || 1337;
 
-app.listen(port, () => {
-  console.log(
-    "El servidor está inicializado en http://localhost:%d",
-    port
-  );
+app.listen(port, "0.0.0.0", () => {
+  console.log(`Servidor iniciado correctamente en el puerto ${port}`);
+
 });
